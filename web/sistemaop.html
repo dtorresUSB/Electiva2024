@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- AWP_In_Variable Name='"Memoria0"' -->
+<!-- AWP_In_Variable Name='"Salida"' -->
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronómetro</title>
+    <style>
+        body {
+            text-align: center;
+        
+            margin: auto;
+            background-image: url('backg.png');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position:center;
+        }
+
+        .container{
+            background-color: rgb(247, 246, 243);
+            border-radius: 10px;
+            padding: 0;
+            padding-right: 12px;
+            padding-left: 12px;
+            margin: 80px auto;
+            width: 500px;
+            height: 450px;
+            } 
+
+        h4  {
+            font-family:Tw Cen MT;
+            font-size: 35px;
+            letter-spacing: -1px;
+            color: rgb(175, 115, 120);
+            /*background-color: url('col-bg.PNG');*/
+            padding-top: 40px;
+            }
+
+            .bodytext  {
+            font-family:Tw Cen MT;
+            font-size: 24px;
+            letter-spacing: -1px;
+            color: rgb(146, 129, 141);
+            text-align: center;
+            margin-left: 32px;
+            margin-right: 32px;
+            margin-bottom: auto;
+            margin-top: 40px;
+            } 
+
+        #cronometro {
+            font-family:Tw Cen MT;
+            font-size: 56px;
+            margin: 24px;
+            color: #e7e7e7;
+            display: inline-block;
+            /*border-radius: 8px;
+            border: 2px solid rgb(231, 230, 228);
+            box-sizing: border-box;
+            background-color: rgb(231, 230, 228);*/
+        }
+       #resultado  {
+            font-family:Tw Cen MT;
+            font-size: 24px;
+            letter-spacing: -1px;
+            color: rgb(146, 129, 141);
+            text-align: center;
+            margin-bottom: auto;    
+            margin-top: 15px;
+            }
+
+
+    
+        .boton {
+            padding: 12px 24px;
+            font-family:Tw Cen MT;
+            font-size: 20px;
+            cursor: pointer;
+            margin: 0 auto;
+            border-radius: 24px;
+            border: 2px solid rgb(231, 230, 228);
+            box-sizing: border-box;
+            background-color: rgb(167, 130, 255);
+            font-weight: 550;
+            opacity: 0.95;
+            
+        }
+
+        .boton:hover {
+            opacity: 0.75;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+    <h4 id="titulo">Intenta detenerlo en 12 segundos</h4>
+    <div class="bodytext">Presiona sobre el cronómetro para activarlo o detenerlo</div>
+    <br>
+<br>
+    <button id="botonDetener" class="boton" >
+        <div id="cronometro">0.0</div>
+    </button>
+    
+    
+    
+    <button id="botonReiniciar" class="boton">Reiniciar</button>
+    <div id="resultado"></div>
+</form>
+<script>
+    let tiempo = 0;
+    let cronometro = document.getElementById('cronometro');
+    let resultado = document.getElementById('resultado');
+    let botonDetener = document.getElementById('botonDetener');
+    let botonReiniciar = document.getElementById('botonReiniciar');
+    let intervalo;
+
+    let isplaying = false;
+
+    function iniciarCronometro() {
+        
+        tiempo = 0;
+        cronometro.textContent = (tiempo / 10).toFixed(1);
+        cronometro.style.display = 'block';
+        resultado.style.display = 'none';
+        botonDetener.style.display = 'block';
+        botonReiniciar.style.display = 'none';
+        intervalo = setInterval(() => {
+            tiempo += 1;
+            if (tiempo <= 50) { // Mostrar el contador hasta 5 segundos (50 décimas de segundo)
+                cronometro.textContent = (tiempo / 10).toFixed(1);
+            } else {
+                cronometro.textContent = "??"; // Mostrar ?? después de 5 segundos
+            }
+        }, 100);
+    }
+
+    botonDetener.addEventListener('click', () => {
+        isplaying = !isplaying;
+        
+        if(isplaying){
+            clearInterval(intervalo);
+        resultado.textContent = `Tiempo alcanzado: ${(tiempo / 10).toFixed(1)} segundos`;
+        resultado.style.display = 'block';
+        cronometro.style.display = 'block'; // Mostrar el contador nuevamente al detenerlo
+        cronometro.textContent = (tiempo / 10).toFixed(1);
+        //botonDetener.style.display = 'none';
+        }else{
+            clearInterval(intervalo);
+            iniciarCronometro();
+        }
+        
+    });
+
+    botonReiniciar.addEventListener('click', () => {
+        clearInterval(intervalo);
+        iniciarCronometro();
+    });
+
+    iniciarCronometro();
+</script>
+</body>
+</html>

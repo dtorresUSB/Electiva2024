@@ -1,0 +1,17 @@
+h1{
+    color: black;
+    text-align: center;
+    background-color: lightblue;
+}
+form{
+    background-color: lightgray;
+    width: 400px;
+    padding: 16px;
+    margin: auto;
+    border-radius: 30px;
+}
+
+.uno{
+    color: rgb(45, 45, 126);
+    text-align: center;
+}

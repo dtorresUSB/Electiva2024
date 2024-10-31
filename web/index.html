@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- AWP_In_Variable Name='"Memoria0"' -->
+    <!-- AWP_In_Variable Name='"Salida"' -->
+    <!-- AWP_Enum_Def Name="listado" Values='
+ 0:"cero", 1:"uno", 2:"dos", 3:"tres", 4:"cuatro", 5:"cinco",
+ 6:"seis", 7:"siete", 8:"ocho", 9:"nueve", 10:"diez"' -->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>HMI integration with S7-1500</title>
+        <link rel="stylesheet" href="miEstilo.css">
+        <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js">
+    
+  </script>
+    </head>
+    <body>
+        <div>
+            <form method="post" action id="inicio" name="inicio">
+                <input type="submit" value="Set_out0">
+                <input type="hidden" name='"Memoria0"' value="1">
+            </form>
+            <form method="post" action id="detener" name="detener">
+                <input type="submit" value="Reset_Out0">
+                <input type="hidden" name='"Memoria0"' value="0">
+            </form>
+        </div>
+        <div id="cuadro"></div>
+        <div id="move"></div>
+        <div id="progreso"></div>
+        <script>
+  $(document).ready(function(){
+  setInterval(actualizar, 500) //recarga la pagina cada 0.5 segundos
+  $('#inicio, #detener').submit(function(){
+  $.ajax({
+  type:'POST',
+  url:$(this).attr('action'),
+  data:$(this).serialize(),
+  success:function(data){
+  $('#result').html(data);
+  }
+  })
+  return false;
+  });
+  })
+  function actualizar() {
+  $("#cuadro").load("elementos.html")
+  $("#move").load("movimiento.html")
+  $('#progreso').load("progreso.html")
+ }
+
+ </script>
+    </body>
+</html>
+<!-- AWP_Enum_Ref Name='"Value"' Enum="listado" -->
+<!-- AWP_Enum_Ref Name='"Salida"' -->
+<div>
+    <svg width="400" height="200" fill="red">
+        <rect id="rectangulo" width="400" height="200" class="square" />
+    </svg>
+    <h2><p><strong>Estado de la salida:</strong>:="Salida":</p></h2>
+</div>
+<h1>Conteo: :="Value":</h1>
+<script>
+    var variable = :="Salida": ;
+    if (variable == 1) {
+    $("#rectangulo").css("fill", "rgb(0,255,0)");
+    } else {
+    $("#rectangulo").css("fill", "rgb(255,0,0)");
+    }
+   </script>
+<!-- AWP_In_Variable Name='"Value"' -->
+<canvas id="myCanvas" width="200" height="200">
+</canvas>
+<script>
+    var c = document.getElementById("myCanvas");
+ var ctx = c.getContext("2d");
+ var x = (:="Value": * 10);
+ ctx.fillStyle = 'blue';
+ ctx.fillRect(x, x, 100, 100)
+</script>
+<!-- AWP_In_Variable Name='"Value"' -->
+<div class="ProgressBar">
+    <div class="ProgressBarText">:="Value":% completado</div>
+    <div class="ProgressBarFill" style='width: :="Value":%;'></div>
+</div>
+
+#rectangulo {
+    stroke: black;
+    stroke-width: 10px;
+    }
+    #myCanvas {
+    border: 1px solid;
+    }
+    .ProgressBar {
+    width: 16em;
+    border: 1px solid black;
+    background: #eef;
+    height: 1.25em;
+    display: block;
+    }
+    .ProgressBarText {
+    position: absolute;
+    font-size: 1em;
+    width: 16em;
+    text-align: center;
+    font-weight: normal;
+    }
+    .ProgressBarFill {
+    height: 100%;
+    background: #aae;
+    display: block;
+    overflow: visible;
+    }
